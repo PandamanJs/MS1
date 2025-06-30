@@ -1,5 +1,30 @@
+import { useState } from "react";
 import styles from "../styles/HomePage.module.css";
 function HomePage() {
+  const [input, setInput] = useState("");
+  // Optionally, you can keep the result in state for further use
+  // const [students, setStudents] = useState([]);
+
+  const handleLookup = async () => {
+    if (!input) return;
+    const payload = /^\d{9,}$/.test(input)
+      ? { parent_phone: input }
+      : { student_id: input };
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000";
+      const res = await fetch(`${apiUrl}/students/student-lookup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      // For now, just log the result. You can use setStudents(data.data) if needed.
+      console.log("Student lookup result:", data);
+    } catch (err) {
+      console.error("Failed to connect to backend.", err);
+    }
+  };
+
   return (
     <main className={styles.main}>
       <nav className={styles.navigation}>
@@ -50,8 +75,8 @@ function HomePage() {
           <h3>Enter your registered phone number or the studend ID number</h3>
         </div>
         <div className={styles.inputs}>
-          <input type="text" placeholder="e.g. 09xx-xxx-xxx" />
-          <button>Proceed</button>
+          <input type="text" placeholder="e.g. 09xx-xxx-xxx" value={input} onChange={e => setInput(e.target.value)} />
+          <button onClick={handleLookup}>Proceed</button>
         </div>
         <div className={styles.terms}>
           <span>
