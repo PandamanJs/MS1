@@ -1,0 +1,131 @@
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  align-items: center;
+  margin-top: 4.63rem;
+}
+
+.iconNname {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.title {
+  color: #003049;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+}
+
+.schoolSection {
+  margin-top: 7.63rem;
+}
+
+.school {
+  text-align: center;
+}
+
+.school h2 {
+  color: #000;
+  text-align: center;
+  font-family: "Poppins";
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 100;
+  line-height: normal;
+}
+.school h1 {
+  color: #003049;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.school h3 {
+  color: #000;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.inputs {
+  display: flex;
+  margin-top: 0.75rem;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem;
+  flex-direction: column;
+  gap: 1.1rem;
+  align-self: stretch;
+}
+.inputs input,
+.inputs button {
+  width: 100%;
+  height: 50px;
+  margin: 0 auto;
+  max-width: 300px;
+  padding: 0 16px;
+  font-size: 1rem;
+  border: 1px solid #2d3648;
+  border-radius: 16px;
+  outline: none;
+  font-family: "Poppins", sans-serif;
+}
+.inputs input {
+  color: #2d3648;
+}
+.inputs button {
+  margin: 0 auto;
+  border-radius: 0.75rem;
+  background: #003049;
+  color: #ffffff;
+  font-weight: 700;
+}
+.terms {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.terms span {
+  color: #bdbdbd;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.625rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.terms a {
+  color: #bdbdbd;
+  font-family: "Poppins";
+  font-size: 0.625rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+}
+
+.footer {
+  margin-top: 8.44rem;
+}
+.topArt {
+  display: flex;
+  width: 15.36194rem;
+  height: 3.69706rem;
+  z-index: 5;
+}
+.bottomArt {
+  z-index: -1;
+}
