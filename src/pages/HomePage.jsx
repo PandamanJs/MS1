@@ -1,5 +1,51 @@
+import { useState } from "react";
 import styles from "../styles/HomePage.module.css";
 function HomePage() {
+  const [input, setInput] = useState("");
+  const [error, setError] = useState("");
+  // Optionally, you can keep the result in state for further use
+  // const [students, setStudents] = useState([]);
+
+  const handleLookup = async () => {
+    setError("");
+    if (!input) {
+      setError("Please enter a phone number or student ID");
+      return;
+    }
+    // Basic validation: phone (9+ digits) or non-empty student ID
+    const isPhone = /^\d{9,}$/.test(input);
+    const isStudentId = !isPhone && input.trim().length > 0;
+    if (!isPhone && !isStudentId) {
+      setError("Enter valid phone number or student ID");
+      return;
+    }
+    const payload = isPhone
+      ? { parent_phone: input }
+      : { student_id: input };
+    try {
+      // Use environment variable for backend URL
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000";
+      const res = await fetch(`${apiUrl}/students/student-lookup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!data.success || !data.data || data.data.length === 0) {
+        setError("Enter valid phone number or student ID");
+        return;
+      }
+      // For now, just log the result. In the future, route to next page with parent name.
+      console.log("Student lookup result:", data);
+      // Example: extract parent name if available (future use)
+      // const parentName = data.data[0]?.parent_name || "";
+    } catch (err) {
+      setError("Failed to connect to backend.");
+      console.error("Failed to connect to backend.", err);
+    }
+  };
+
+
   return (
     <main className={styles.main}>
       <nav className={styles.navigation}>
@@ -50,9 +96,10 @@ function HomePage() {
           <h3>Enter your registered phone number or the studend ID number</h3>
         </div>
         <div className={styles.inputs}>
-          <input type="text" placeholder="e.g. 09xx-xxx-xxx" />
-          <button>Proceed</button>
+          <input type="text" placeholder="e.g. 09xx-xxx-xxx" value={input} onChange={e => setInput(e.target.value)} />
+          <button onClick={handleLookup}>Proceed</button>
         </div>
+        {error && <div style={{ color: 'red', marginTop: 8 }}>{error}</div>}
         <div className={styles.terms}>
           <span>
             View the <a>terms</a> and
