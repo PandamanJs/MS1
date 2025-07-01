@@ -24,7 +24,7 @@ function WelcomePage() {
     const payload = isPhone ? { parent_phone: input } : { student_id: input };
     try {
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000";
-      const res = await fetch(`${apiUrl}/students/student-lookup`, {
+      const res = await fetch(`${apiUrl}/students/students/student-lookup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
