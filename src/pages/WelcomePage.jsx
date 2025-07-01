@@ -30,7 +30,7 @@ function WelcomePage() {
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      if (!data.success || !data.data || data.data.length === 0) {
+      if (!data.success || !data.data || data.data.length === 0 || data.message === "Parent found, but no students linked") {
         setError("Enter valid phone number or student ID");
         return;
       }
