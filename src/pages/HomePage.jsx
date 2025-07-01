@@ -45,7 +45,6 @@ function HomePage() {
     }
   };
 
-
   return (
     <main className={styles.main}>
       <nav className={styles.navigation}>
