@@ -1,0 +1,36 @@
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f8fa;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-family: "Poppins", sans-serif;
+}
+
+.leftSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #000;
+}
+
+.code {
+  font-weight: 500;
+}
+
+.schoolInfo {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.amount {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #2d3648;
+}

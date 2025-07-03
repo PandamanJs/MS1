@@ -1,36 +1,56 @@
+import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import Button from "../components/Button";
 import Title from "../components/Title";
 import styles from "../styles/HomePage.module.css";
-import { useLocation } from "react-router-dom";
 
 function HomePage() {
+  const navigate = useNavigate();
   const location = useLocation();
   const parentName = location.state?.parentName || "Parent";
+
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
+
+  const isHomePath = location.pathname === "/home";
+
   return (
     <div className={styles.main}>
-      <Title />
-      <section className={styles.userInfo}>
-        <h2>Good Afternoon</h2>
-        <h1>{parentName}</h1>
-        <h3>
-          Which one of our services would you like us to help you with today?
-        </h3>
-      </section>
-      <section className={styles.buttons}>
-        <Button message="Pay For School Fees" givenClassName="active"></Button>
-        <Button
-          message="View/Clear Current Balances"
-          givenClassName="notActive"
-        ></Button>
-        <Button
-          message="View My Payment History"
-          givenClassName="notActive"
-        ></Button>
-        <Button
-          message="View School Payment Plans"
-          givenClassName="notActive"
-        ></Button>
-      </section>
+      {isHomePath ? (
+        <>
+          <Title />
+          <section className={styles.userInfo}>
+            <h2>Good Afternoon</h2>
+            <h1>{parentName}</h1>
+            <h3>
+              Which one of our services would you like us to help you with
+              today?
+            </h3>
+          </section>
+          <section className={styles.buttons}>
+            <Button
+              message="Pay For School Fees"
+              givenClassName="active"
+              onClick={() => handleNavigate("payment-dashboard")}
+            />
+            <Button
+              message="View/Clear Current Balances"
+              givenClassName="notActive"
+              onClick={() => handleNavigate("balances")}
+            />
+            <Button
+              message="View My Payment History"
+              givenClassName="notActive"
+            />
+            <Button
+              message="View School Payment Plans"
+              givenClassName="notActive"
+            />
+          </section>
+        </>
+      ) : null}
+
+      <Outlet />
     </div>
   );
 }
