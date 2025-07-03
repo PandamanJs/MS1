@@ -11,7 +11,9 @@ function AppWrapper() {
   const location = useLocation();
 
   // Define all paths where Footer should be hidden
-  const hideFooter = location.pathname.includes("payment-dashboard");
+  const hideFooter =
+    location.pathname.includes("payment-dashboard") ||
+    location.pathname.includes("balances");
 
   return (
     <div className="container">

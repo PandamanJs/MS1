@@ -1,3 +1,4 @@
+import ProceedButton from "../components/ProceedButton";
 import styles from "../styles/BalanceSummary.module.css";
 
 function BalanceSummary() {
@@ -57,11 +58,8 @@ function BalanceSummary() {
         <button className={styles.addBtn}>+add to payments</button>
       </div>
 
-      {/* Proceed Button */}
       <div className={styles.footer}>
-        <button className={styles.proceedBtn}>
-          Proceed <span className={styles.arrow}>→</span>
-        </button>
+        <ProceedButton />
       </div>
     </div>
   );

@@ -21,7 +21,6 @@ function WelcomePage() {
       setError("Enter valid phone number or student ID");
       return;
     }
-
     const payload = isPhone ? { parent_phone: input } : { student_id: input };
     try {
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000";
