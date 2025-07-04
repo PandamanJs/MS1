@@ -120,7 +120,35 @@
   border-radius: 12px;
   cursor: pointer;
 }
+.addBtn {
+  background-color: #f1f5f9;
+  color: #2d3748;
+  font-weight: 600;
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
 
+/* new “added” state */
+.addedBox {
+  margin-top: 1rem;
+  width: 100%;
+  background-color: #e6fdf5;
+  border-radius: 12px;
+  padding: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addedBox svg {
+  stroke: #2bb6a9;
+  width: 24px;
+  height: 24px;
+}
 .footer {
   margin-top: 2rem;
   display: flex;

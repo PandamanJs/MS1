@@ -41,6 +41,7 @@ function HomePage() {
             <Button
               message="View My Payment History"
               givenClassName="notActive"
+              onClick={() => handleNavigate("receipts")}
             />
             <Button
               message="View School Payment Plans"

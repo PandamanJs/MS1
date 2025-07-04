@@ -1,15 +1,27 @@
+import { useState } from "react";
+import Button from "../components/Button";
 import ProceedButton from "../components/ProceedButton";
+import Title from "../components/Title";
 import styles from "../styles/BalanceSummary.module.css";
 
 function BalanceSummary() {
+  const [added, setAdded] = useState(false);
+  function handlePayForAllBalances() {}
+  const handleAddToPayments = () => {
+    setAdded(true);
+  };
   return (
     <div className={styles.wrapper}>
-      {/* Header */}
+      <Title />
       <div className={styles.header}>
         <h2>Current Balances Owing</h2>
         <div className={styles.totalLabel}>Total Balance</div>
         <div className={styles.totalAmount}>ZMW 150.00</div>
-        <button className={styles.primaryBtn}>Pay for All Balances</button>
+        <Button
+          givenClassName="active"
+          message="Pay For All Balances"
+          onClick={handlePayForAllBalances}
+        />
       </div>
 
       <hr className={styles.separator} />
@@ -55,7 +67,30 @@ function BalanceSummary() {
           </div>
         </div>
 
-        <button className={styles.addBtn}>+add to payments</button>
+        {added ? (
+          <div className={styles.addedBox}>
+            {/* You can swap in your own SVG if you like */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M20 6L9 17L4 12"
+                stroke="#2BB6A9"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+        ) : (
+          <button className={styles.addBtn} onClick={handleAddToPayments}>
+            + add to payments
+          </button>
+        )}
       </div>
 
       <div className={styles.footer}>
