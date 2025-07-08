@@ -4,6 +4,7 @@ import SelectChild from "../components/SelectChild";
 import styles from "../styles/PaymentDashboard.module.css";
 import AddSchoolFeesForm from "../components/AddSchoolFeesForm";
 import StudentHeader from "../components/StudentHeader";
+import CreditCheckout from "../components/CreditCheckout";
 
 function PaymentDashboard() {
   const navigate = useNavigate();

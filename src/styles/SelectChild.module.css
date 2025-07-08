@@ -19,8 +19,8 @@
 
 .checkbox {
   appearance: none;
-  width: 12px;
-  height: 12px;
+  min-width: 12px;
+  min-height: 12px;
   border: 2px solid #007aff;
   border-radius: 50%;
   position: relative;
@@ -40,6 +40,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -55%);
+}
+
+.childInfo {
+  width: 100%;
 }
 
 .childInfo h2 {
@@ -64,11 +68,13 @@
   background-color: #dde4e3;
   color: #2d3648;
   font-weight: 600;
-  font-size: 0.4rem;
+  width: 50%;
+  font-size: 0.6rem;
   border: none;
   font-family: "Poppins", sans-serif;
-  padding: 0.6rem 1rem;
+  padding: 0.6rem 0.75rem;
   border-radius: 10px;
-  white-space: nowrap;
   cursor: pointer;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
