@@ -1,25 +1,54 @@
+import { useEffect, useState } from "react";
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import Button from "../components/Button";
-import SelectChild from "../components/SelectChild";
 import styles from "../styles/PaymentDashboard.module.css";
 import AddSchoolFeesForm from "../components/AddSchoolFeesForm";
-import StudentHeader from "../components/StudentHeader";
-import CreditCheckout from "../components/CreditCheckout";
 
 function PaymentDashboard() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [students, setStudents] = useState([]);
+  const [selectedIdx, setSelectedIdx] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchStudents() {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch("http://localhost:8000/students/student-lookup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phone: "+260 97 999 9999" })
+        });
+        const data = await res.json();
+        if (!data.success || !data.data || data.data.length === 0) {
+          throw new Error(data.message || "No students found for this parent.");
+        }
+        setStudents(data.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchStudents();
+  }, []);
 
   const handleSelectServices = () => {
-    navigate("services"); // navigates to /home/payment-dashboard/services
+    navigate("services");
   };
 
   const handleGoBack = () => {
     navigate(-1);
   };
 
-  // Check if we are at the base path or deeper (e.g., services)
   const isBasePath = location.pathname === "/home/payment-dashboard";
+  const selectedStudent = students[selectedIdx] || null;
+
+  if (loading) return <div className={styles.loading}>Loading...</div>;
+  if (error) return <div className={styles.error}>{error}</div>;
 
   return (
     <main className={styles.main}>
@@ -43,7 +72,6 @@ function PaymentDashboard() {
               />
             </svg>
           </div>
-
           <div className={styles.instructions}>
             <h1>Choose the account(s) you want to pay for.</h1>
           </div>
@@ -53,11 +81,16 @@ function PaymentDashboard() {
               for.
             </h2>
           </div>
-          <StudentHeader />
-          <div className={styles.container}>
-            <SelectChild />
-            <SelectChild />
-            <SelectChild />
+          <div className={styles.studentSelector}>
+            {students.map((student, idx) => (
+              <button
+                key={student.id}
+                className={idx === selectedIdx ? styles.selected : ""}
+                onClick={() => setSelectedIdx(idx)}
+              >
+                {student.first_name} {student.last_name}
+              </button>
+            ))}
           </div>
           <Button
             message="Select Services"
@@ -66,7 +99,7 @@ function PaymentDashboard() {
           />
         </>
       ) : (
-        <Outlet />
+        <Outlet context={{ selectedStudent }} />
       )}
     </main>
   );
