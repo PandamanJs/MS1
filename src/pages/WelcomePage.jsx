@@ -65,7 +65,7 @@ export default function WelcomePage() {
           type="text"
           value={input}
           onChange={e => setInput(e.target.value)}
-          placeholder="e.g. +260 97 999 9999 or dummy.parent@email.com or STU99999"
+          placeholder="e.g. +260 123 4567"
           className={styles.input}
         />
         <button type="submit" className={styles.button} disabled={loading || !input}>
