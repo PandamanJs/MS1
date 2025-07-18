@@ -9,9 +9,21 @@ import CreditCheckout from "../components/CreditCheckout";
 function PaymentDashboard() {
   const navigate = useNavigate();
   const location = useLocation();
+  const students = location.state?.students || [];
+  const [selected, setSelected] = useState([]);
+
+  const HandleSelect = (studentID) => {
+    setSelected((prev) =>
+      prev.includes(studentID)
+        ? prev.filter((id) => id !== studentID)
+        : [...prev, studentID]
+      );
+  };
 
   const handleSelectServices = () => {
-    navigate("services"); // navigates to /home/payment-dashboard/services
+    if (selected.length === 0) return;
+    
+    navigate("services", { state: { students: student.filter(s => selceted.includes(s.student_id)) } });
   };
 
   const handleGoBack = () => {
@@ -53,16 +65,35 @@ function PaymentDashboard() {
               for.
             </h2>
           </div>
+        
           <StudentHeader />
+          
           <div className={styles.container}>
-            <SelectChild />
-            <SelectChild />
-            <SelectChild />
+            {students.map((student) => (
+
+              <SelectChild
+                Key={student.student_id}
+                studentName={[
+                  student.first_name,
+                  student.middle_name,
+                  student.last_name,
+                ]
+              .filter(Boolean)
+              .join(" ")}
+            balance={student.balance}
+            isSelected={selected.includes(student.student_id)}
+            onClick={() => handleSelected(student.student_id)}
+            // schoolName={student.school_name}
+            // className={student.class_name}
+             />
+            ))}
+
           </div>
           <Button
             message="Select Services"
-            givenClassName="active"
+            givenClassName={selected.length > 0 ? "active" : "notActive"}
             onClick={handleSelectServices}
+            disabled={selected.length === 0}
           />
         </>
       ) : (

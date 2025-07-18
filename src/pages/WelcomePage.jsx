@@ -40,14 +40,15 @@ function WelcomePage() {
          return;
        }
        // Try to extract parent name from the first student record (if available)
-    //   let parentName = "Parent";
-    //   if (data.data[0]) {
-    //     // If backend includes parent info, use it. Otherwise, fallback to student name.
-    //     parentName =
-    //       data.data[0].parent_name ||
-    //       `${data.data[0].first_name} ${data.data[0].last_name}`;
-    //   }
-    navigate("/home", { state: { parentName } });
+       let parentName = "Parent";
+       if (data.data && data.data[0]) {
+         // If backend includes parent info, use it. Otherwise, fallback to student name.
+         parentName =
+           data.data[0].parent_name ||
+           `${data.data[0].first_name} ${data.data[0].last_name}`;
+         students = data.data;
+       }
+    navigate("/home", { state: { parentName, students } });
     //   navigate("/home");
      } catch (err) {
        setError("Failed to connect to backend.");

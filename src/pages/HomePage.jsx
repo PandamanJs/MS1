@@ -8,8 +8,8 @@ function HomePage() {
   const location = useLocation();
   const parentName = location.state?.parentName || "Parent";
 
-  const handleNavigate = (path) => {
-    navigate(path);
+  const handleNavigate = (path, state = {}) => {
+    navigate(path, { state });
   };
 
   const isHomePath = location.pathname === "/home";
@@ -31,7 +31,7 @@ function HomePage() {
             <Button
               message="Pay For School Fees"
               givenClassName="active"
-              onClick={() => handleNavigate("payment-dashboard")}
+              onClick={() => handleNavigate("payment-dashboard", { students })}
             />
             <Button
               message="View/Clear Current Balances"
