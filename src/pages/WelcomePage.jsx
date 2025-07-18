@@ -41,6 +41,7 @@ function WelcomePage() {
        }
        // Try to extract parent name from the first student record (if available)
        let parentName = "Parent";
+       let students = [];
        if (data.data && data.data[0]) {
          // If backend includes parent info, use it. Otherwise, fallback to student name.
          parentName =
