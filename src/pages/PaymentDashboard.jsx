@@ -5,6 +5,7 @@ import styles from "../styles/PaymentDashboard.module.css";
 import AddSchoolFeesForm from "../components/AddSchoolFeesForm";
 import StudentHeader from "../components/StudentHeader";
 import CreditCheckout from "../components/CreditCheckout";
+import React, { useState } from "react";
 
 function PaymentDashboard() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ function PaymentDashboard() {
   const students = location.state?.students || [];
   const [selected, setSelected] = useState([]);
 
-  const HandleSelect = (studentID) => {
+  const handleSelected = (studentID) => {
     setSelected((prev) =>
       prev.includes(studentID)
         ? prev.filter((id) => id !== studentID)
@@ -23,7 +24,7 @@ function PaymentDashboard() {
   const handleSelectServices = () => {
     if (selected.length === 0) return;
     
-    navigate("services", { state: { students: student.filter(s => selceted.includes(s.student_id)) } });
+    navigate("services", { state: { students: students.filter(s => selected.includes(s.student_id)) } });
   };
 
   const handleGoBack = () => {
@@ -72,7 +73,7 @@ function PaymentDashboard() {
             {students.map((student) => (
 
               <SelectChild
-                Key={student.student_id}
+                key={student.student_id}
                 studentName={[
                   student.first_name,
                   student.middle_name,

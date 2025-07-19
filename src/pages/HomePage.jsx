@@ -7,6 +7,7 @@ function HomePage() {
   const navigate = useNavigate();
   const location = useLocation();
   const parentName = location.state?.parentName || "Parent";
+  const students = location.state?.students || [];
 
   const handleNavigate = (path, state = {}) => {
     navigate(path, { state });
