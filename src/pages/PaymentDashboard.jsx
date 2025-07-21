@@ -1,43 +1,33 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import Button from "../components/Button";
 import styles from "../styles/PaymentDashboard.module.css";
-import AddSchoolFeesForm from "../components/AddSchoolFeesForm";
+import StudentHeader from "../components/StudentHeader";
+import SelectChild from "../components/SelectChild"; // assuming this exists
 
 function PaymentDashboard() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [students, setStudents] = useState([]);
-  const [selectedIdx, setSelectedIdx] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function fetchStudents() {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await fetch("http://localhost:8000/students/student-lookup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ phone: "+260 97 999 9999" })
-        });
-        const data = await res.json();
-        if (!data.success || !data.data || data.data.length === 0) {
-          throw new Error(data.message || "No students found for this parent.");
-        }
-        setStudents(data.data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchStudents();
-  }, []);
+  const students = location.state?.students || [];
+  const [selected, setSelected] = useState([]);
+
+  const handleSelected = (studentID) => {
+    setSelected((prev) =>
+      prev.includes(studentID)
+        ? prev.filter((id) => id !== studentID)
+        : [...prev, studentID]
+    );
+  };
 
   const handleSelectServices = () => {
-    navigate("services");
+    if (selected.length === 0) return;
+
+    const selectedStudents = students.filter((s) =>
+      selected.includes(s.student_id)
+    );
+
+    navigate("services", { state: { students: selectedStudents } });
   };
 
   const handleGoBack = () => {
@@ -45,10 +35,6 @@ function PaymentDashboard() {
   };
 
   const isBasePath = location.pathname === "/home/payment-dashboard";
-  const selectedStudent = students[selectedIdx] || null;
-
-  if (loading) return <div className={styles.loading}>Loading...</div>;
-  if (error) return <div className={styles.error}>{error}</div>;
 
   return (
     <main className={styles.main}>
@@ -72,6 +58,7 @@ function PaymentDashboard() {
               />
             </svg>
           </div>
+
           <div className={styles.instructions}>
             <h1>Choose the account(s) you want to pay for.</h1>
           </div>
@@ -81,25 +68,36 @@ function PaymentDashboard() {
               for.
             </h2>
           </div>
-          <div className={styles.studentSelector}>
-            {students.map((student, idx) => (
-              <button
-                key={student.id}
-                className={idx === selectedIdx ? styles.selected : ""}
-                onClick={() => setSelectedIdx(idx)}
-              >
-                {student.first_name} {student.last_name}
-              </button>
+
+          <StudentHeader />
+
+          <div className={styles.container}>
+            {students.map((student) => (
+              <SelectChild
+                key={student.student_id}
+                studentName={[
+                  student.first_name,
+                  student.middle_name,
+                  student.last_name,
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                balance={student.balance}
+                isSelected={selected.includes(student.student_id)}
+                onClick={() => handleSelected(student.student_id)}
+              />
             ))}
           </div>
+
           <Button
             message="Select Services"
-            givenClassName="active"
+            givenClassName={selected.length > 0 ? "active" : "notActive"}
             onClick={handleSelectServices}
+            disabled={selected.length === 0}
           />
         </>
       ) : (
-        <Outlet context={{ selectedStudent }} />
+        <Outlet context={{ students }} />
       )}
     </main>
   );
