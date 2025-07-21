@@ -39,7 +39,7 @@ export default function WelcomePage() {
       const res = await fetch(`${API_URL}/lookup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ search: searchInput}),
+        body: JSON.stringify({ search: input}),
       });
 
       const data = await res.json();
