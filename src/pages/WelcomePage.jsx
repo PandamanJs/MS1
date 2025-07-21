@@ -39,7 +39,7 @@ export default function WelcomePage() {
       const res = await fetch(`${API_URL}/lookup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ search: searchInput}),
       });
 
       const data = await res.json();
@@ -145,4 +145,4 @@ export default function WelcomePage() {
   );
 }
 
-// export default WelcomePage;
+export default WelcomePage;
