@@ -6,12 +6,26 @@ import styles from "../styles/Checkout.module.css";
 export default function Checkout() {
   const navigate = useNavigate();
   const [amount, setAmount] = useState("2450.00");
-  const items = [
-    { label: "Talitha Kapambwe’s School Fee", amount: 1500 },
-    { label: "Talitha Kapambwe’s Transport Fee", amount: 950 },
-  ];
+ // const items = [
+ //
+ //   { label: "Talitha Kapambwe’s School Fee", amount: 1500 },
+ //   { label: "Talitha Kapambwe’s Transport Fee", amount: 950 },
+ // ];
   const total = items.reduce((sum, i) => sum + i.amount, 0);
 
+  const response = await fetch(`${API_URL}/payments/make-payment`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      parent_id,
+      payments: selectedStudents.map(s => ({
+        student_id: s.student_id,
+        amount: s.amount,
+        payment_method: "mobile_money"
+      })),
+      transaction_reference: uuidv4()
+    })
+  });
   return (
     <main className={styles.main}>
       <Title />
