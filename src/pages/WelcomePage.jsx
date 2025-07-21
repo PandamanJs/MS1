@@ -84,4 +84,11 @@ function WelcomePage() {
             <a> conditions </a> of service
           </span>
           <span>All Rights Reserved ©</span>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+export default WelcomePage;
 
