@@ -1,10 +1,11 @@
 import styles from "../styles/SelectedChild.module.css";
 
-function SelectedChild({ givenClassName }) {
+function SelectedChild({ student, givenClassName }) {
+  if (!student) return null;
   return (
     <div className={`${styles.main} ${styles[givenClassName]}`}>
-      <span>Tabitha Kapambwe</span>
-      <span>C20012</span>
+      <span>{student.first_name} {student.last_name}</span>
+      <span>{student.student_id}</span>
     </div>
   );
 }

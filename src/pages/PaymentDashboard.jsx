@@ -1,15 +1,14 @@
+import { useState } from "react";
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import Button from "../components/Button";
-import SelectChild from "../components/SelectChild";
 import styles from "../styles/PaymentDashboard.module.css";
-import AddSchoolFeesForm from "../components/AddSchoolFeesForm";
 import StudentHeader from "../components/StudentHeader";
-import CreditCheckout from "../components/CreditCheckout";
-import React, { useState } from "react";
+import SelectChild from "../components/SelectChild"; // assuming this exists
 
 function PaymentDashboard() {
   const navigate = useNavigate();
   const location = useLocation();
+
   const students = location.state?.students || [];
   const [selected, setSelected] = useState([]);
 
@@ -18,20 +17,23 @@ function PaymentDashboard() {
       prev.includes(studentID)
         ? prev.filter((id) => id !== studentID)
         : [...prev, studentID]
-      );
+    );
   };
 
   const handleSelectServices = () => {
     if (selected.length === 0) return;
-    
-    navigate("services", { state: { students: students.filter(s => selected.includes(s.student_id)) } });
+
+    const selectedStudents = students.filter((s) =>
+      selected.includes(s.student_id)
+    );
+
+    navigate("services", { state: { students: selectedStudents } });
   };
 
   const handleGoBack = () => {
     navigate(-1);
   };
 
-  // Check if we are at the base path or deeper (e.g., services)
   const isBasePath = location.pathname === "/home/payment-dashboard";
 
   return (
@@ -66,12 +68,11 @@ function PaymentDashboard() {
               for.
             </h2>
           </div>
-        
+
           <StudentHeader />
-          
+
           <div className={styles.container}>
             {students.map((student) => (
-
               <SelectChild
                 key={student.student_id}
                 studentName={[
@@ -79,17 +80,15 @@ function PaymentDashboard() {
                   student.middle_name,
                   student.last_name,
                 ]
-              .filter(Boolean)
-              .join(" ")}
-            balance={student.balance}
-            isSelected={selected.includes(student.student_id)}
-            onClick={() => handleSelected(student.student_id)}
-            // schoolName={student.school_name}
-            // className={student.class_name}
-             />
+                  .filter(Boolean)
+                  .join(" ")}
+                balance={student.balance}
+                isSelected={selected.includes(student.student_id)}
+                onClick={() => handleSelected(student.student_id)}
+              />
             ))}
-
           </div>
+
           <Button
             message="Select Services"
             givenClassName={selected.length > 0 ? "active" : "notActive"}
@@ -98,7 +97,7 @@ function PaymentDashboard() {
           />
         </>
       ) : (
-        <Outlet />
+        <Outlet context={{ students }} />
       )}
     </main>
   );
