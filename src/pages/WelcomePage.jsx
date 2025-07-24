@@ -139,9 +139,10 @@ export default function WelcomePage() {
 
         <div className={styles.terms}>
           <span>
-            View the <a>terms</a> and <a>conditions</a> of service
+            View the <a href="#">terms</a> and <a href="#">conditions</a> of
+            service
           </span>
-          <span>All Rights Reserved ©</span>
+          <span>All rights reserved ©</span>
         </div>
       </section>
     </main>

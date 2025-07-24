@@ -131,10 +131,40 @@
 .input {
   gap: 1rem;
 }
+
+.school h3 {
+  text-align: center;
+  color: #0b2e44;
+  margin-top: 10px;
+  font-size: 15px;
+}
 .schoolSection {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 1rem;
+}
+
+.terms {
+  text-align: center;
+  margin-top: 2rem;
+  color: #888;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.terms span {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.terms a {
+  color: #555;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.terms a:hover {
+  color: #000;
 }
