@@ -10,7 +10,7 @@ export default function WelcomePage() {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -25,26 +25,30 @@ export default function WelcomePage() {
     }
 
     try {
+
+      const cleanedInput = input.trim().replace(/\u200E/g, ""); 
+      
       let payload = {};
-      if (/^\+?\d{7,}$/.test(input)) {
-        payload.phone = input.trim();
-      } else if (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(input)) {
-        payload.email = input.trim();
+      if (/^\+?\d{7,}$/.test(cleanedInput)) {
+        payload.phone = cleanedInput.trim();
+      } else if (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(cleanedInput)) {
+        payload.email = cleanedInput.trim();
       } else {
-        payload.student_id = input.trim();
+        payload.student_id = cleanedInput.trim();
       }
 
       const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
       const res = await fetch(`${API_URL}/lookup`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ search: input }),
+        headers: { "Content-Type": "application/json" }, 
+        
+        body: JSON.stringify({ search: cleanedInput }),
       });
 
       const data = await res.json();
       if (!data.success || !data.data || data.data.length === 0) {
-        throw new Error(data.message || "No students found for this parent.");
+        throw new Error(data.message || "No students found.");
       }
 
       setStudents(data.data);
