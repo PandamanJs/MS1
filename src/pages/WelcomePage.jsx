@@ -95,12 +95,15 @@ export default function WelcomePage() {
         </div>
 
         <div className={styles.input}>
-          <input
-            type="text"
-            placeholder="e.g. +260123456789 or student ID"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
+          <div className={styles.inputForm}>
+            <label for="text">Enter your phone number or a student ID</label>
+            <input
+              type="text"
+              placeholder="e.g. +260123456789 or 12323"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+          </div>
 
           <Button
             message={loading ? "Loading..." : "Proceed"}

@@ -21,7 +21,7 @@
 
 .form {
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -39,27 +39,15 @@
   height: 50px;
   margin: 0 auto;
   max-width: 300px;
-  padding: 0 16px;
+  padding: 5px;
   font-size: 1rem;
   border: 1px solid #2d3648;
   border-radius: 16px;
   outline: none;
   font-family: "Poppins", sans-serif;
 }
-
-.button {
-  width: 100%;
-  padding: 1rem;
-  background-color: #002940;
-  color: #ffffff;
-  font-weight: 600;
-  max-width: 300px;
-  margin-top: 1rem;
-  font-size: 16px;
-  border: none;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.input input::placeholder {
+  font-size: 14px;
 }
 
 .button:hover:not(:disabled) {
@@ -126,9 +114,21 @@
   text-decoration: underline;
 }
 
-.input {
+.input,
+.inputForm {
   display: flex;
   flex-direction: column;
+}
+.inputForm {
+  width: 100%;
+}
+.inputForm label {
+  color: gray;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.input {
   gap: 1rem;
 }
 .schoolSection {
