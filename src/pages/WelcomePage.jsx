@@ -37,6 +37,8 @@ export default function WelcomePage() {
         payload.student_id = cleanedInput.trim();
       }
 
+      console.log("Cleaned input:", cleanedInput)
+
       const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
       const res = await fetch(`${API_URL}/lookup`, {
@@ -48,7 +50,7 @@ export default function WelcomePage() {
 
       const data = await res.json();
       if (!data.success || !data.data || data.data.length === 0) {
-        throw new Error(data.message || "No students found.");
+        throw new Error("No matching students or parents found. Please check your input.");
       }
 
       setStudents(data.data);
