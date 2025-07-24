@@ -39,7 +39,7 @@ export default function WelcomePage() {
       const res = await fetch(`${API_URL}/lookup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ search: input}),
+        body: JSON.stringify({ search: input }),
       });
 
       const data = await res.json();
@@ -94,7 +94,7 @@ export default function WelcomePage() {
           <h3>Enter your registered phone number, email or the student ID</h3>
         </div>
 
-        <div className={styles.inputs}>
+        <div className={styles.input}>
           <input
             type="text"
             placeholder="e.g. +260123456789 or student ID"
