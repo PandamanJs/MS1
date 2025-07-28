@@ -63,21 +63,15 @@ export default function WelcomePage() {
 
       let parentId = null;
       if (
-        data.data[0] &&
-        data.data[0].parent_student_links &&
-        data.data[0].parent_student_links.length > 0
+        data.students[0] &&
+        data.students[0].parent_student_links &&
+        data.students[0].parent_student_links.length > 0
       ) {
-        parentId = data.data[0].parent_student_links[0].parents.id;
+        parentId = data.students[0].parent_student_links[0].parents.id;
       }
-      if (!parentId && data.data[0].parent_id) {
-        parentId = data.data[0].parent_id;
+      if (!parentId && data.students[0].parent_id) {
+        parentId = data.students[0].parent_id;
       }
-
-      if (parentId) {
-        const parentRes = await fetch(`${API_URL}/parents/${parentId}`);
-        const parentData = await parentRes.json();
-        if (parentData.success && parentData.data) {
-          setParent(parentData.data);
 
           // Optional: navigate to home with state
           navigate("/home", {
