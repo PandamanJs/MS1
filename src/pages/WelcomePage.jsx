@@ -49,11 +49,12 @@ export default function WelcomePage() {
       });
 
       const data = await res.json();
-      if (!data.success || !data.data || data.data.length === 0) {
+      if (!data.success || !data.students || data.students.length === 0) {
         throw new Error("No matching students or parents found. Please check your input.");
       }
 
-      setStudents(data.data);
+      setStudents(data.students);
+      setParent(data.parent);
 
       let parentId = null;
       if (
@@ -76,8 +77,8 @@ export default function WelcomePage() {
           // Optional: navigate to home with state
           navigate("/home", {
             state: {
-              parentName: parentData.data.name || "Parent",
-              students: data.data,
+              parentName: `${data.parent.first_name} ${data.parent.last_name}`,
+              students: data.students,
             },
           });
         }
