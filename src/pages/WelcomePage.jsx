@@ -61,19 +61,6 @@ export default function WelcomePage() {
       setStudents(data.students);
       setParent(data.parent);
 
-      let parentId = null;
-      if (
-        data.students[0] &&
-        data.students[0].parent_student_links &&
-        data.students[0].parent_student_links.length > 0
-      ) {
-        parentId = data.students[0].parent_student_links[0].parents.id;
-      }
-      if (!parentId && data.students[0].parent_id) {
-        parentId = data.students[0].parent_id;
-      }
-
-          // Optional: navigate to home with state
           navigate("/home", {
             state: {
               parentName: `${data.parent.first_name} ${data.parent.last_name}`,
