@@ -49,6 +49,11 @@ export default function WelcomePage() {
       });
 
       const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "No students found");
+      }
+      
       if (!data.success || !data.students || data.students.length === 0) {
         throw new Error("No matching students or parents found. Please check your input.");
       }
