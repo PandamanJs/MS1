@@ -68,7 +68,7 @@ export default function WelcomePage() {
             },
           });
         }
-      }
+    
     } catch (err) {
       setError(err.message || "An error occurred.");
     } finally {
