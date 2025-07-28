@@ -6,7 +6,7 @@ import styles from "../styles/HomePage.module.css";
 function HomePage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { parentName, students } = location.state? || {};
+  const { parentName, students } = location.state || {};
 
 
   const handleNavigate = (path, state = {}) => {
