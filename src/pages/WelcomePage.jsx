@@ -72,9 +72,6 @@ export default function WelcomePage() {
               students: data.students,
             },
           });
-        }
-    try{
-      
     } catch (err) {
       setError(err.message || "An error occurred.");
     } finally {
