@@ -73,7 +73,8 @@ export default function WelcomePage() {
             },
           });
         }
-    
+    try{
+      
     } catch (err) {
       setError(err.message || "An error occurred.");
     } finally {
