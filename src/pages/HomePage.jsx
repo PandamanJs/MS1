@@ -37,12 +37,12 @@ function HomePage() {
             <Button
               message="View/Clear Current Balances"
               givenClassName="notActive"
-              onClick={() => handleNavigate("balances")}
+              onClick={() => handleNavigate("balances", { students })}
             />
             <Button
               message="View My Payment History"
               givenClassName="notActive"
-              onClick={() => handleNavigate("receipts")}
+              onClick={() => handleNavigate("receipts", { students })}
             />
             <Button
               message="View School Payment Plans"

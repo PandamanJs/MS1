@@ -61,10 +61,7 @@ export default function WelcomePage() {
       setStudents(data.students);
       setParent(data.parent);
 
-      let title = "Mr.";
-      if (data.parent.gender === "female") {
-        title = "Mrs.";
-      }
+      let title = "Mr./Miss./Mrs.";
 
           navigate("/home", {
             state: {
