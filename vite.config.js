@@ -4,6 +4,9 @@ import eslint from "vite-plugin-eslint";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), eslint()],
+  define: {
+    'import.meta.env.VITE_DATABASE_URL': JSON.stringify(process.env.DATABASE_URL)
+  },
   server: {
     host: "0.0.0.0",
     port: 5000,

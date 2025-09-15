@@ -1,5 +1,6 @@
 import styles from "../styles/AddSchoolFeesForm.module.css";
 import { useEffect, useState } from "react";
+import { getFeeTypes, getAcademicYears, getAcademicTerms, addStudentFee } from "../services/database";
 
 function AddSchoolFeesForm({ student }) {
   const [feeTypes, setFeeTypes] = useState([]);
@@ -14,13 +15,18 @@ function AddSchoolFeesForm({ student }) {
     async function fetchOptions() {
       try {
         const [feeTypesRes, yearsRes, termsRes] = await Promise.all([
-          fetch("http://localhost:8000/financial/fee-types").then(r => r.json()),
-          fetch("http://localhost:8000/financial/academic-years").then(r => r.json()),
-          fetch("http://localhost:8000/financial/academic-terms").then(r => r.json()),
+          getFeeTypes(),
+          getAcademicYears(),
+          getAcademicTerms()
         ]);
-        setFeeTypes(feeTypesRes.data || []);
-        setYears(yearsRes.data || []);
-        setTerms(termsRes.data || []);
+        
+        if (feeTypesRes.success) setFeeTypes(feeTypesRes.data || []);
+        if (yearsRes.success) setYears(yearsRes.data || []);
+        if (termsRes.success) setTerms(termsRes.data || []);
+        
+        if (!feeTypesRes.success || !yearsRes.success || !termsRes.success) {
+          setError("Failed to load form options");
+        }
       } catch (err) {
         setError("Failed to load form options");
       }
@@ -38,21 +44,18 @@ function AddSchoolFeesForm({ student }) {
     setError(null);
     setSuccess(null);
     try {
-      const res = await fetch("http://localhost:8000/financial/student-fees/request", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          student_id: student.id,
-          fee_type_id: form.fee_type_id,
-          academic_year_id: form.academic_year_id,
-          academic_term_id: form.academic_term_id,
-          amount: parseFloat(form.amount),
-          due_date: form.due_date
-        })
+      const result = await addStudentFee({
+        studentId: student.id,
+        feeTypeId: parseInt(form.fee_type_id),
+        academicYearId: parseInt(form.academic_year_id),
+        academicTermId: parseInt(form.academic_term_id),
+        amount: parseFloat(form.amount),
+        dueDate: form.due_date
       });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.message || "Failed to request fee");
-      setSuccess("Fee request submitted successfully.");
+      
+      if (!result.success) throw new Error(result.error || "Failed to add fee");
+      
+      setSuccess("Fee added successfully.");
       setForm({ fee_type_id: "", academic_year_id: "", academic_term_id: "", amount: "", due_date: "" });
     } catch (err) {
       setError(err.message);
@@ -82,7 +85,7 @@ function AddSchoolFeesForm({ student }) {
         <select id="academic_year_id" name="academic_year_id" className={styles.select} value={form.academic_year_id} onChange={handleChange} required>
           <option value="">Select Year</option>
           {years.map((y) => (
-            <option key={y.id} value={y.id}>{y.year_name}</option>
+            <option key={y.id} value={y.id}>{y.year}</option>
           ))}
         </select>
       </div>
@@ -91,7 +94,7 @@ function AddSchoolFeesForm({ student }) {
         <select id="academic_term_id" name="academic_term_id" className={styles.select} value={form.academic_term_id} onChange={handleChange} required>
           <option value="">Select Term</option>
           {terms.map((t) => (
-            <option key={t.id} value={t.id}>{t.term_name}</option>
+            <option key={t.id} value={t.id}>{t.name}</option>
           ))}
         </select>
       </div>

@@ -1,5 +1,6 @@
 import styles from "../styles/PaymentHistoryBox.module.css";
 import { useEffect, useState } from "react";
+import { getStudentPayments } from "../services/database";
 
 function PaymentHistoryBox({ student }) {
   const [payments, setPayments] = useState([]);
@@ -8,16 +9,22 @@ function PaymentHistoryBox({ student }) {
 
   useEffect(() => {
     if (!student) return;
-    setLoading(true);
-    setError(null);
-    fetch(`http://localhost:8000/payments/?student_id=${student.id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data.success) throw new Error(data.message || "Failed to fetch payments");
-        setPayments(data.data || []);
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+    
+    async function fetchPayments() {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await getStudentPayments(student.id);
+        if (!result.success) throw new Error(result.error || "Failed to fetch payments");
+        setPayments(result.data || []);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchPayments();
   }, [student]);
 
   if (!student) {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import ProceedButton from "../components/ProceedButton";
 import Title from "../components/Title";
+import { lookupStudent, getStudentFees } from "../services/database";
 import styles from "../styles/BalanceSummary.module.css";
 
 function BalanceSummary() {
@@ -18,21 +19,17 @@ function BalanceSummary() {
       setError(null);
       try {
         // Fetch students for the parent (simulate login for now)
-        const res = await fetch("http://localhost:8000/students/student-lookup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ phone: "+260 97 999 9999" })
-        });
-        const data = await res.json();
-        if (!data.success || !data.data || data.data.length === 0) {
-          throw new Error(data.message || "No students found for this parent.");
+        const result = await lookupStudent("+260979999999");
+        if (!result.success || !result.data || result.data.length === 0) {
+          throw new Error(result.error || "No students found for this parent.");
         }
-        setStudents(data.data);
+        setStudents(result.data);
         // Fetch balances for the first student by default
-        if (data.data[0]) {
-          const balRes = await fetch(`http://localhost:8000/students/${data.data[0].id}/fees`);
-          const balData = await balRes.json();
-          setBalances(balData.data || []);
+        if (result.data[0]) {
+          const balRes = await getStudentFees(result.data[0].id);
+          if (balRes.success) {
+            setBalances(balRes.data || []);
+          }
         }
       } catch (err) {
         setError(err.message);
@@ -49,9 +46,12 @@ function BalanceSummary() {
     setError(null);
     try {
       const student = students[idx];
-      const balRes = await fetch(`http://localhost:8000/students/${student.id}/fees`);
-      const balData = await balRes.json();
-      setBalances(balData.data || []);
+      const balRes = await getStudentFees(student.id);
+      if (balRes.success) {
+        setBalances(balRes.data || []);
+      } else {
+        throw new Error(balRes.error || "Failed to fetch fees");
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -67,7 +67,7 @@ function BalanceSummary() {
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (error) return <div className={styles.error}>{error}</div>;
 
-  const selectedStudent = students[selectedIdx] || null;
+  // const selectedStudent = students[selectedIdx] || null;
 
   return (
     <div className={styles.wrapper}>
@@ -103,7 +103,7 @@ function BalanceSummary() {
         {balances.length === 0 ? (
           <div>No outstanding balances.</div>
         ) : (
-          balances.map((fee, i) => (
+          balances.map((fee) => (
             <div key={fee.id} className={styles.breakdownBox}>
               <div className={styles.breakdownRowBold}>
                 <span>{fee.fee_types?.name || "Fee"} - {fee.amount}</span>

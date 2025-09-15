@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Title from "../components/Title";
 import Button from "../components/Button";
+import { lookupStudent } from "../services/database";
 import styles from "../styles/WelcomePage.module.css";
 
 export default function WelcomePage() {
@@ -28,47 +29,42 @@ export default function WelcomePage() {
 
       const cleanedInput = input.trim().replace(/\u200E/g, ""); 
       
-      let payload = {};
-      if (/^\+?\d{7,}$/.test(cleanedInput)) {
-        payload.phone = cleanedInput.trim();
-      } else if (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(cleanedInput)) {
-        payload.email = cleanedInput.trim();
-      } else {
-        payload.student_id = cleanedInput.trim();
-      }
+      console.log("Cleaned input:", cleanedInput);
 
-      console.log("Cleaned input:", cleanedInput)
+      const result = await lookupStudent(cleanedInput);
 
-      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
-
-      const res = await fetch(`${API_URL}/lookup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" }, 
-        
-        body: JSON.stringify({ search: cleanedInput }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "No students found");
+      if (!result.success) {
+        throw new Error(result.error || "No students found");
       }
       
-      if (!data.success || !data.students || data.students.length === 0) {
+      if (!result.data || result.data.length === 0) {
         throw new Error("No matching students or parents found. Please check your input.");
       }
 
-      setStudents(data.students);
-      setParent(data.parent);
+      // Use the first student found as the primary student
+      const foundStudents = result.data;
+      setStudents(foundStudents);
+      
+      // Set parent info based on the first student
+      const primaryStudent = foundStudents[0];
+      setParent({
+        first_name: "Parent of",
+        last_name: primaryStudent.first_name
+      });
 
       let title = "Mr./Miss./Mrs.";
 
-          navigate("/home", {
-            state: {
-              parentName: `${title} ${data.parent.last_name}`,
-              students: data.students,
-            },
-          });
+      navigate("/home", {
+        state: {
+          parentName: `${title} ${primaryStudent.last_name}`,
+          students: foundStudents.map(student => ({
+            id: student.id,
+            first_name: student.first_name,
+            last_name: student.last_name,
+            student_id: student.student_id
+          })),
+        },
+      });
     } catch (err) {
       setError(err.message || "An error occurred.");
     } finally {
