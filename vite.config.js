@@ -8,9 +8,11 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 5000,
     strictPort: true,
-    allowedHosts: "all",
+    allowedHosts: ["localhost", ".replit.dev", ".replit.co", "*.replit.dev", "*.worf.replit.dev", "9b335b80-cc03-48a8-a731-aae8d4c760ff-00-irbmh4ybbywj.worf.replit.dev"],
     hmr: {
+      port: 443,
       clientPort: 443,
+      protocol: 'wss',
     },
   },
   preview: {
