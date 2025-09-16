@@ -19,11 +19,11 @@ function AddSchoolFeesForm({ student }) {
           getAcademicYears(),
           getAcademicTerms()
         ]);
-        
+
         if (feeTypesRes.success) setFeeTypes(feeTypesRes.data || []);
         if (yearsRes.success) setYears(yearsRes.data || []);
         if (termsRes.success) setTerms(termsRes.data || []);
-        
+
         if (!feeTypesRes.success || !yearsRes.success || !termsRes.success) {
           setError("Failed to load form options");
         }
@@ -52,13 +52,13 @@ function AddSchoolFeesForm({ student }) {
         amount: parseFloat(form.amount),
         dueDate: form.due_date
       });
-      
+
       if (!result.success) throw new Error(result.error || "Failed to add fee");
-      
+
       setSuccess("Fee added successfully.");
       setForm({ fee_type_id: "", academic_year_id: "", academic_term_id: "", amount: "", due_date: "" });
-    } catch (err) {
-      setError(err.message);
+    } catch {
+      setError("Failed to submit form. Please try again.");
     } finally {
       setLoading(false);
     }

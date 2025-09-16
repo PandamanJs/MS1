@@ -85,7 +85,7 @@ export default function WelcomePage() {
 
         <div className={styles.input}>
           <div className={styles.inputForm}>
-            <label for="text">Enter your phone number or a student ID</label>
+            <label htmlFor="text">Enter your phone number or a student ID</label>
             <input
               type="text"
               placeholder="e.g. +260123456789 or 12323"
